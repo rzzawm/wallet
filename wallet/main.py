@@ -1,7 +1,11 @@
 from click import group
+from rich.console import Console
 from .models import db
 from .models.transactions import Transactions
 from .helpers.prompts import AmountPrompt, DescriptionPrompt, Prompt
+from .helpers.tables import transactions_table
+
+console = Console()
 
 
 @group
@@ -32,7 +36,14 @@ def add():
 
 
 @main.command
-def list(): ...
+def list():
+    try:
+        all_transactions = Transactions.select().order_by(Transactions.created_at.desc())
+    except Exception as e:
+        SystemExit("Failed to fetch transactions\n", e)
+
+    table = transactions_table(all_transactions)
+    console.print(table)
 
 
 if __name__ == "__main__":
