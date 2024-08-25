@@ -1,4 +1,4 @@
-from rich.prompt import PromptBase, InvalidResponse, Prompt
+from rich.prompt import PromptBase, InvalidResponse, Prompt, Confirm
 
 
 class AmountPrompt(PromptBase[float]):
@@ -21,3 +21,16 @@ class DescriptionPrompt(PromptBase[str]):
         if value and len(value) < 3:
             raise InvalidResponse("Write at least 3 charachters")
         return value
+
+
+class IDPrompt(PromptBase[int]):
+    def process_response(self, value: str) -> int:
+        try:
+            int_value = int(value)
+        except ValueError:
+            raise InvalidResponse("ID must be a number")
+
+        if int_value <= 0:
+            raise InvalidResponse("ID must be greater than 0")
+
+        return int_value
