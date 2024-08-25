@@ -57,6 +57,9 @@ def delete():
     console.print(table)
     while True:
         idx_to_delete = IDPrompt.ask("Insert ID of transaction to delete")
+        if idx_to_delete > len(all_transactions):
+            print("ID not found")
+            continue
         confirmed = Confirm.ask("Are you sure?")
         if confirmed:
             break
