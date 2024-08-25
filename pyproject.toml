@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "wallet"
 version = "0.0.1"
-dependencies = []
+dependencies = ["peewee >= 3.17.6"]
 
 [project.scripts]
 "wallet" = "wallet.main:main"
