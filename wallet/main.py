@@ -13,26 +13,27 @@ def main():
     try:
         db.create_tables([Transactions])
     except Exception as e:
-        SystemExit("Creating database tables failed\n", e)
+        console.print("Creating database tables failed\n", e, style="red")
+        SystemExit()
 
 
 @main.command
 def add():
     new_transaction = {
-        "amount": AmountPrompt.ask("Insert amount"),
-        "description": DescriptionPrompt.ask("Insert description", default=None),
         "t_type": Prompt.ask(
-            "Insert transaction type",
+            "[blue]What's the type of transaction[/]",
             choices=['deposit', 'withdraw'],
             default='withdraw',
-        )
+        ),
+        "amount": AmountPrompt.ask("[blue]Enter the transaction amount[/]"),
+        "description": DescriptionPrompt.ask("[blue]Write a description for it if you want[/]", default=None),
     }
 
     try:
         Transactions.insert(**new_transaction).execute()
-        print("Transaction created successfully")
+        console.print("Transaction created successfully", style="green")
     except Exception as e:
-        SystemExit("Failed to add new transaction\n", e)
+        console.print("Failed to add new transaction\n", e, style="red")
 
 
 @main.command
@@ -40,7 +41,8 @@ def list():
     try:
         all_transactions = Transactions.select().order_by(Transactions.created_at.desc())
     except Exception as e:
-        SystemExit("Failed to fetch transactions\n", e)
+        console.print("Failed to fetch transactions\n", e, style="red")
+        return
 
     table = transactions_table(all_transactions)
     console.print(table)
@@ -51,25 +53,27 @@ def delete():
     try:
         all_transactions = Transactions.select().order_by(Transactions.created_at.desc())
     except Exception as e:
-        SystemExit("Failed to fetch transactions\n", e)
+        console.print("Failed to fetch transactions\n", e, style="red")
+        return
 
     table = transactions_table(all_transactions)
     console.print(table)
     while True:
-        idx_to_delete = IDPrompt.ask("Insert ID of transaction to delete")
+        idx_to_delete = IDPrompt.ask(
+            "[blue]Insert ID of transaction to delete[/]")
         if idx_to_delete > len(all_transactions):
-            print("ID not found")
+            console.print("ID not found", style="red")
             continue
-        confirmed = Confirm.ask("Are you sure?")
+        confirmed = Confirm.ask("[blue]Are you sure?[/]")
         if confirmed:
             break
 
     id_to_delete = all_transactions[idx_to_delete - 1]
     try:
         Transactions.get_by_id(id_to_delete).delete_instance()
-        print("Transaction deleted successfully!")
+        console.print("Transaction deleted successfully!", style="green")
     except Exception as e:
-        SystemExit("Failed to delete transaction\n", e)
+        console.print("Failed to delete transaction\n", e, style="red")
 
 
 if __name__ == "__main__":
