@@ -31,11 +31,19 @@ def summary_table(deposits, withdrawals):
     table.add_column("Total")
     table.add_column("Count")
 
-    total_sum = deposits.sum - withdrawals.sum
-    total_count = deposits.count + withdrawals.count
+    total_sum = deposits.sum or 0 - withdrawals.sum or 0
+    total_count = deposits.count or 0 + withdrawals.count or 0
 
-    table.add_row("Deposits", f"{deposits.sum}$", f"{deposits.count}")
-    table.add_row("Withdrawals", f"{withdrawals.sum}$", f"{withdrawals.count}")
+    table.add_row(
+        "Deposits",
+        f"{deposits.sum or 0}$",
+        f"{deposits.count or 0}"
+    )
+    table.add_row(
+        "Withdrawals",
+        f"{withdrawals.sum or 0}$",
+        f"{withdrawals.count or 0}"
+    )
     table.add_row("Total", f"{total_sum}$", f"{total_count}")
 
     return table
