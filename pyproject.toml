@@ -4,7 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "wallet"
+description = "A simple and easy-to-use CLI expense tracker that helps you stay on top of your finances without breaking a sweat."
 version = "0.0.1"
+authors = [{ name = "Reza Eshraghi", email = "rzzawm@gmail.com" }]
+maintainers = [{ name = "Reza Eshraghi", email = "rzzawm@gmail.com" }]
+classifiers = ["Programming Language :: Python :: 3"]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
 dependencies = ["peewee >= 3.17.6", "click >= 8.1.7", "rich >= 13.7.1"]
 
 [project.scripts]
