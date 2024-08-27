@@ -1,9 +1,10 @@
 from click import group
+from peewee import fn
 from rich.console import Console
 from .models import db
 from .models.transactions import Transactions
 from .helpers.prompts import AmountPrompt, DescriptionPrompt, Prompt, IDPrompt, Confirm
-from .helpers.tables import transactions_table
+from .helpers.tables import transactions_table, summary_table
 
 console = Console()
 
@@ -74,6 +75,25 @@ def delete():
         console.print("Transaction deleted successfully!", style="green")
     except Exception as e:
         console.print("Failed to delete transaction\n", e, style="red")
+
+
+@main.command
+def summary():
+    try:
+        d_summary = Transactions.select(
+            fn.sum(Transactions.amount).alias("sum"),
+            fn.count(Transactions.amount).alias("count")
+        ).where(Transactions.t_type == "deposit").get()
+
+        w_summary = Transactions.select(
+            fn.sum(Transactions.amount).alias("sum"),
+            fn.count(Transactions.amount).alias("count")
+        ).where(Transactions.t_type == "withdraw").get()
+    except Exception as e:
+        console.print("Failed to fetch summary\n", e, style="red")
+        return
+
+    console.print(summary_table(d_summary, w_summary))
 
 
 if __name__ == "__main__":

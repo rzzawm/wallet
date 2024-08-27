@@ -23,3 +23,19 @@ def transactions_table(transactions):
         )
 
     return table
+
+
+def summary_table(deposits, withdrawals):
+    table = Table(box=SQUARE, row_styles=['green', 'red', 'yellow bold'])
+    table.add_column("")
+    table.add_column("Total")
+    table.add_column("Count")
+
+    total_sum = deposits.sum - withdrawals.sum
+    total_count = deposits.count + withdrawals.count
+
+    table.add_row("Deposits", f"{deposits.sum}$", f"{deposits.count}")
+    table.add_row("Withdrawals", f"{withdrawals.sum}$", f"{withdrawals.count}")
+    table.add_row("Total", f"{total_sum}$", f"{total_count}")
+
+    return table
