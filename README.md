@@ -14,7 +14,7 @@ A simple and easy-to-use CLI expense tracker that helps you stay on top of your 
 
 ## Screenshots
 
-![wallet screenshot](![image](https://github.com/user-attachments/assets/21187d6b-afc3-49fa-b76d-e5dce882d309))
+![wallet screenshot](https://github.com/user-attachments/assets/21187d6b-afc3-49fa-b76d-e5dce882d309)
 
 
 ## Installation
